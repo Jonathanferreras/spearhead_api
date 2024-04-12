@@ -1,0 +1,37 @@
+services:
+  - name: db
+    env:
+      - key: DB_NAME
+        from_secret: DB_NAME
+      - key: DB_USER
+        from_secret: DB_USER
+      - key: DB_PASSWORD
+        from_secret: DB_PASSWORD
+      - key: DB_HOST
+        from_secret: DB_HOST
+      - key: DB_PORT
+        from_secret: DB_PORT
+    containers:
+      - image: postgres
+
+  - name: app
+    env:
+      - key: PORT
+        from_service: app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    startCommand: gunicorn spearhead_api.wsgi:application --bind 0.0.0.0:$PORT
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: spearhead_api.settings.production
+    envVarsFrom:
+      - service: db
+      - file: .env
+    volumes:
+      - localPath: .
+        dockerPath: /code
+    ports:
+      - ${PORT}:${PORT}
+    dependencies:
+      - name: db
