@@ -12,7 +12,7 @@ services:
 
   app:
     build: .
-    command: gunicorn spearhead_api.wsgi:application --bind 0.0.0.0:${PORT}
+    command: python manage.py runserver 0.0.0.0:${PORT}
     env_file:
       - .env
     volumes:
