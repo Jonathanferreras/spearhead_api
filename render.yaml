@@ -1,30 +1,29 @@
 services:
   - name: db
+    plan: starter
     env:
       - key: DB_NAME
-        from_secret: DB_NAME
+        value: ${DB_NAME}
       - key: DB_USER
-        from_secret: DB_USER
+        value: ${DB_USER}
       - key: DB_PASSWORD
-        from_secret: DB_PASSWORD
+        value: ${DB_PASSWORD}
       - key: DB_HOST
-        from_secret: DB_HOST
+        value: ${DB_HOST}
       - key: DB_PORT
-        from_secret: DB_PORT
-    containers:
-      - image: postgres
+        value: ${DB_PORT}
+    addons:
+      - type: postgres
+
   - name: app
-    envVarsFrom:
-      - service: db
-      - file: .env
-    build:
-      context: .
-      dockerfile: Dockerfile
-    startCommand: gunicorn spearhead_api.wsgi:application --bind 0.0.0.0:${PORT}
-    volumes:
-      - localPath: .
-        dockerPath: /code
-    ports:
-      - "${PORT}:${PORT}"
-    dependencies:
-      - name: db
+    plan: starter
+    buildCommand: |
+      docker build -t spearhead_app .
+    startCommand: |
+      docker run -e PORT=$PORT -e DB_NAME=$DB_NAME -e DB_USER=$DB_USER -e DB_PASSWORD=$DB_PASSWORD -e DB_HOST=$DB_HOST -e DB_PORT=$DB_PORT -p $PORT:$PORT spearhead_app
+    env:
+      - key: PORT
+        fromType: user-supplied
+    source_mount:
+      path: .
+      mount_path: /code
