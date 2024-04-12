@@ -3,11 +3,9 @@ FROM python:3.10
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-RUN pip install --upgrade pip
+RUN python -m pip install --upgrade pip==24.0
 
 WORKDIR /code
-
-RUN rm -f requirements.txt
 
 COPY requirements.txt /code/
 
