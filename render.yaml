@@ -1,6 +1,6 @@
 services:
   - name: db
-    plan: starter
+    plan: free
     env:
       - key: DB_NAME
         value: ${DB_NAME}
@@ -16,7 +16,7 @@ services:
       - type: postgres
 
   - name: app
-    plan: starter
+    plan: free
     buildCommand: |
       docker build -t spearhead_app .
     startCommand: |
