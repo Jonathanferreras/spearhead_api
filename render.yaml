@@ -13,11 +13,10 @@ services:
         from_secret: DB_PORT
     containers:
       - image: postgres
-
   - name: app
     env:
       - key: PORT
-        from_service: app
+        from_secret: PORT
     build:
       context: .
       dockerfile: Dockerfile
