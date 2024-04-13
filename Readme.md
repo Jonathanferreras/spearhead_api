@@ -10,8 +10,8 @@ https://github.com/adamdevelops/Spearhead
 2. **Clone the project:**
    `git clone https://github.com/Jonathanferreras/spearhead_api.git`
 3. **Navigate to project root directory and run docker build:**
-   `cd spearhead_api`
-   `docker compose -f docker-compose.dev.yaml up --build`
+   - `cd spearhead_api`
+   - `docker compose -f docker-compose.dev.yaml up --build`
 
 _Note you might have to run migration. If so, open a separate window and do the following:_
 
